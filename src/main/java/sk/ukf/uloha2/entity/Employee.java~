@@ -1,7 +1,6 @@
 package sk.ukf.uloha2.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
 import java.math.BigDecimal;
 import java.sql.Date;
 
@@ -13,58 +12,35 @@ public class Employee {
     @Column(name = "id")
     private int id;
 
-    @NotBlank(message = "Krstné meno nesmie byť prázdne")
-    @Size(min = 2, max = 50, message = "Krstné meno musí mať 2-50 znakov")
     @Column(name = "first_name")
     private String firstName;
 
-    @NotBlank(message = "Priezvisko nesmie byť prázdne")
-    @Size(min = 2, max = 50, message = "Priezvisko musí mať 2-50 znakov")
     @Column(name = "last_name")
     private String lastName;
 
-    @NotNull(message = "Dátum narodenia nesmie byť prázdny")
-    @Past(message = "Dátum narodenia musí byť v minulosti")
     @Column(name = "birth_date")
     private Date birthDate;
 
-    @NotBlank(message = "Email nesmie byť prázdny")
-    @Pattern(
-            regexp = "^[a-zA-Z0-9][a-zA-Z0-9._-]{0,63}@[a-zA-Z0-9][a-zA-Z0-9.-]{0,252}\\.[a-zA-Z]{2,}$",
-            message = "Email musí mať platný formát (max 64 znakov pred @, max 254 celkovo)"
-    )
-    @Size(max = 254, message = "Email môže mať maximálne 254 znakov")
     @Column(name = "email")
     private String email;
 
-    @NotBlank(message = "Telefónne číslo nesmie byť prázdne")
-    @Pattern(
-            regexp = "^\\+421\\d{9}$",
-            message = "Telefónne číslo musí začínať +421 a obsahovať presne 9 číslic za ním"
-    )
     @Column(name = "phone")
     private String phone;
 
-    @NotBlank(message = "Pracovná pozícia nesmie byť prázdna")
-    @Size(min = 2, max = 100, message = "Pracovná pozícia musí mať 2-100 znakov")
     @Column(name = "job_title")
     private String jobTitle;
 
-    @NotNull(message = "Plat nesmie byť prázdny")
-    @DecimalMin(value = "0.0", inclusive = false, message = "Plat musí byť väčší ako 0")
-    @Digits(integer = 10, fraction = 2, message = "Plat môže mať maximálne 10 číslic pred desatinnou čiarkou a 2 za ňou")
     @Column(name = "salary")
     private BigDecimal salary;
 
-    @NotNull(message = "Typ pracovného pomeru nesmie byť prázdny")
     @Column(name = "full_time")
-    private Boolean fullTime;
+    private boolean fullTime;
 
     public Employee() {
     }
 
     public Employee(String firstName, String lastName, Date birthDate, String email,
-                    String phone, String jobTitle, BigDecimal salary, Boolean fullTime) {
+                    String phone, String jobTitle, BigDecimal salary, boolean fullTime) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthDate = birthDate;
@@ -139,11 +115,11 @@ public class Employee {
         this.salary = salary;
     }
 
-    public Boolean isFullTime() {
+    public boolean isFullTime() {
         return fullTime;
     }
 
-    public void setFullTime(Boolean fullTime) {
+    public void setFullTime(boolean fullTime) {
         this.fullTime = fullTime;
     }
 

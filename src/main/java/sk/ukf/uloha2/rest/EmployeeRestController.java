@@ -5,8 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import sk.ukf.uloha2.dto.ApiResponse;
-import sk.ukf.uloha2.entity.Employee;
+import sk.ukf.uloha2.model.Employee;
 import sk.ukf.uloha2.service.EmployeeService;
 
 import java.util.List;
@@ -33,8 +34,9 @@ public class EmployeeRestController {
     }
 
     @GetMapping("/employees/{id}")
-    public ResponseEntity<ApiResponse<Employee>> getEmployee(@PathVariable int id) {
-        Employee employee = employeeService.findById(id);
+    public ResponseEntity<ApiResponse<Employee>> getEmployee(@PathVariable Long id) {
+        Employee employee = employeeService.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Zamestnanec nebol nájdený"));
 
         ApiResponse<Employee> response = ApiResponse.success(
                 "Zamestnanec úspešne načítaný",
@@ -45,7 +47,7 @@ public class EmployeeRestController {
 
     @PostMapping("/employees")
     public ResponseEntity<ApiResponse<Employee>> addEmployee(@Valid @RequestBody Employee employee) {
-        employee.setId(0);
+        employee.setId(null);
         Employee employee_db = employeeService.save(employee);
 
         ApiResponse<Employee> response = ApiResponse.success(
@@ -57,10 +59,11 @@ public class EmployeeRestController {
 
     @PutMapping("/employees/{id}")
     public ResponseEntity<ApiResponse<Employee>> updateEmployee(
-            @PathVariable int id,
+            @PathVariable Long id,
             @Valid @RequestBody Employee employee) {
 
-        employeeService.findById(id);
+        employeeService.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Zamestnanec nebol nájdený"));
 
         employee.setId(id);
         Employee updatedEmployee = employeeService.save(employee);
@@ -73,7 +76,7 @@ public class EmployeeRestController {
     }
 
     @DeleteMapping("/employees/{id}")
-    public ResponseEntity<ApiResponse<String>> deleteEmployee(@PathVariable int id) {
+    public ResponseEntity<ApiResponse<String>> deleteEmployee(@PathVariable Long id) {
         employeeService.deleteById(id);
 
         ApiResponse<String> response = ApiResponse.success(
@@ -87,13 +90,6 @@ public class EmployeeRestController {
     public ResponseEntity<ApiResponse<List<Employee>>> search(
             @RequestParam String firstName,
             @RequestParam String lastName) {
-
-        List<Employee> employees = employeeService.findByFirstNameAndLastName(firstName, lastName);
-
-        ApiResponse<List<Employee>> response = ApiResponse.success(
-                "Vyhľadávanie dokončené",
-                employees
-        );
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED, "Vyhľadávanie nie je implementované");
     }
 }

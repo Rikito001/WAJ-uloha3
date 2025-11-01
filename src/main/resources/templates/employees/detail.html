@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="sk">
+<head>
+    <meta charset="UTF-8">
+    <title>Detail zamestnanca</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.2/css/bootstrap.min.css}"/>
+    <style> body { padding: 20px; } </style>
+</head>
+<body>
+<div class="container">
+    <h1>Detail zamestnanca</h1>
+
+    <dl class="row">
+        <dt class="col-sm-3">ID</dt>
+        <dd class="col-sm-9" th:text="${employee.id}"></dd>
+
+        <dt class="col-sm-3">Meno</dt>
+        <dd class="col-sm-9" th:text="${employee.firstName}"></dd>
+
+        <dt class="col-sm-3">Priezvisko</dt>
+        <dd class="col-sm-9" th:text="${employee.lastName}"></dd>
+
+        <dt class="col-sm-3">E-mail</dt>
+        <dd class="col-sm-9" th:text="${employee.email}"></dd>
+
+        <dt class="col-sm-3">Pozícia</dt>
+        <dd class="col-sm-9" th:text="${employee.jobTitle}"></dd>
+
+        <dt class="col-sm-3">Úväzok</dt>
+        <dd class="col-sm-9" th:text="${employee.fullTime}"></dd>
+    </dl>
+
+    <div class="mt-3">
+        <a class="btn btn-secondary" th:href="@{/employees}">Späť</a>
+    </div>
+</div>
+</body>
+</html>
+

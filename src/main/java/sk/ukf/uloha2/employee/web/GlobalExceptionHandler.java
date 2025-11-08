@@ -1,0 +1,22 @@
+package sk.ukf.uloha2.employee.web;
+
+import sk.ukf.uloha2.employee.exception.ObjectNotFoundException;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+
+@ControllerAdvice
+public class GlobalExceptionHandler {
+
+    @ExceptionHandler(ObjectNotFoundException.class)
+    public String handleNotFound(ObjectNotFoundException ex, Model model) {
+        model.addAttribute("error", ex.getMessage());
+        return "error/not-found";
+    }
+
+    @ExceptionHandler(Exception.class)
+    public String handleOther(Exception ex, Model model) {
+        model.addAttribute("error", "Nastala neočakávaná chyba.");
+        return "error/server-error";
+    }
+}

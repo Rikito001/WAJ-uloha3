@@ -1,4 +1,4 @@
-package sk.ukf.uloha2.exception;
+package sk.ukf.uloha2.employee.exception;
 
 public class ObjectNotFoundException {
 }

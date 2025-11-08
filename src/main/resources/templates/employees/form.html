@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title><!DOCTYPE html>
+        <html xmlns:th="http://www.thymeleaf.org" lang="sk">
+        <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title th:text="${employee.id == 0} ? 'Pridať zamestnanca' : 'Upraviť zamestnanca'">Zamestnanec</title>
+    <style>
+        body { font-family: system-ui, Arial, sans-serif; max-width: 840px; margin: 32px auto; padding: 0 16px; }
+        h1 { margin-bottom: 20px; }
+        form { background: #fff; border: 1px solid #eee; border-radius: 8px; padding: 24px; }
+        .row { margin-bottom: 16px; }
+        label { display: block; font-weight: 600; margin-bottom: 6px; }
+        input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; }
+        .error { color: #c62828; font-size: 0.9rem; margin-top: 6px; }
+        .actions { margin-top: 20px; display: flex; gap: 12px; }
+        .btn { padding: 10px 16px; border: 0; border-radius: 6px; cursor: pointer; text-decoration: none; display: inline-block; }
+        .btn-primary { background: #0d6efd; color: #fff; }
+        .btn-secondary { background: #6c757d; color: #fff; }
+    </style>
+</head>
+<body>
+
+<h1 th:text="${employee.id == 0} ? 'Pridať zamestnanca' : 'Upraviť zamestnanca'">Formulár</h1>
+
+<form th:action="@{/employees/save}" th:object="${employee}" method="post">
+    <!-- Skryté ID určuje create/update -->
+    <input type="hidden" th:field="*{id}"/>
+
+    <div class="row">
+        <label for="firstName">Meno</label>
+        <input id="firstName" type="text" th:field="*{firstName}" placeholder="Ján"/>
+        <div class="error" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">Chyba</div>
+    </div>
+
+    <div class="row">
+        <label for="lastName">Priezvisko</label>
+        <input id="lastName" type="text" th:field="*{lastName}" placeholder="Novák"/>
+        <div class="error" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Chyba</div>
+    </div>
+
+    <div class="row">
+        <label for="email">Email</label>
+        <input id="email" type="email" th:field="*{email}" placeholder="jan.novak@firma.sk"/>
+        <div class="error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Chyba</div>
+    </div>
+
+    <div class="row">
+        <label for="birthDate">Dátum narodenia</label>
+        <input id="birthDate" type="date" th:field="*{birthDate}"/>
+        <div class="error" th:if="${#fields.hasErrors('birthDate')}" th:errors="*{birthDate}">Chyba</div>
+    </div>
+
+    <div class="actions">
+        <button type="submit" class="btn btn-primary" th:text="${employee.id == 0} ? 'Pridať' : 'Uložiť'">Uložiť</button>
+        <a class="btn btn-secondary" th:href="@{/employees}">Späť na zoznam</a>
+    </div>
+</form>
+
+</body>
+</html>
+</title>
+</head>
+<body>
+
+</body>
+</html>

@@ -1,53 +1,65 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="sk">
 <head>
-    <meta charset="UTF-8">
-    <title>Zamestnanci</title>
-    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.2/css/bootstrap.min.css}"/>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Zoznam zamestnancov</title>
     <style>
-        body { padding: 20px; }
-        table td, table th { vertical-align: middle; }
+        body { font-family: system-ui, Arial, sans-serif; max-width: 1024px; margin: 32px auto; padding: 0 16px; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+        table { width: 100%; border-collapse: collapse; background: #fff; }
+        th, td { padding: 12px; border-bottom: 1px solid #eee; text-align: left; }
+        th { background: #f7f7f7; }
+        .actions { display: flex; gap: 8px; }
+        .btn { padding: 8px 12px; border-radius: 6px; text-decoration: none; border: 0; cursor: pointer; display: inline-block; }
+        .btn-primary { background: #0d6efd; color: #fff; }
+        .btn-secondary { background: #6c757d; color: #fff; }
+        .btn-danger { background: #dc3545; color: #fff; }
+        .empty { background: #fff; padding: 24px; border-radius: 8px; text-align: center; }
     </style>
-    <!-- Bootstrap via webjars is optional; page works without it. -->
 </head>
 <body>
-<div class="container">
+
+<div class="header">
     <h1>Zamestnanci</h1>
-
-    <div class="mb-3">
-        <a class="btn btn-primary" th:href="@{/employees/new}">Pridať nového</a>
-    </div>
-
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>Meno</th>
-            <th>Priezvisko</th>
-            <th>E-mail</th>
-            <th>Pozícia</th>
-            <th>Úväzok</th>
-            <th>Akcie</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="emp : ${employees}">
-            <td th:text="${emp.id}"></td>
-            <td th:text="${emp.firstName}"></td>
-            <td th:text="${emp.lastName}"></td>
-            <td th:text="${emp.email}"></td>
-            <td th:text="${emp.jobTitle}"></td>
-            <td th:text="${emp.fullTime}"></td>
-            <td>
-                <a class="btn btn-sm btn-secondary" th:href="@{'/employees/' + ${emp.id}}">Detail</a>
-                <form th:action="@{'/employees/' + ${emp.id} + '/delete'}" method="post" style="display:inline;">
-                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Naozaj zmazať?');">Zmazať</button>
-                </form>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+    <a class="btn btn-primary" th:href="@{/employees/new}">+ Pridať zamestnanca</a>
 </div>
+
+<div th:if="${employees == null or #lists.isEmpty(employees)}" class="empty">
+    Žiadni zamestnanci v databáze.
+</div>
+
+<table th:if="${employees != null and !#lists.isEmpty(employees)}">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Meno</th>
+        <th>Priezvisko</th>
+        <th>Email</th>
+        <th>Dátum narodenia</th>
+        <th>Akcie</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="e : ${employees}">
+        <td th:text="${e.id}">1</td>
+        <td th:text="${e.firstName}">Ján</td>
+        <td th:text="${e.lastName}">Novák</td>
+        <td th:text="${e.email}">jan.novak@firma.sk</td>
+        <td th:text="${e.birthDate}">1990-01-01</td>
+        <td>
+            <div class="actions">
+                <a class="btn btn-secondary" th:href="@{/employees/{id}/edit(id=${e.id})}">Upraviť</a>
+                <!-- Voliteľné: delete cez POST -->
+                <form th:action="@{/employees/{id}/delete(id=${e.id})}" method="post"
+                      onsubmit="return confirm('Naozaj zmazať tohto zamestnanca?');">
+                    <button class="btn btn-danger" type="submit">Zmazať</button>
+                </form>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
 </body>
 </html>
-

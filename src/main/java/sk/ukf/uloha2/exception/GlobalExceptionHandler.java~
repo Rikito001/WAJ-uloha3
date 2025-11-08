@@ -1,4 +1,0 @@
-package sk.ukf.uloha2.exception;
-
-public class GlobalExceptionHandler {
-}

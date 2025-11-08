@@ -9,5 +9,4 @@ class Uloha2ApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-
 }

@@ -1,48 +1,176 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="sk">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Nový zamestnanec</title>
-    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.2/css/bootstrap.min.css}"/>
-    <style> body { padding: 20px; } </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pridať zamestnanca</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            color: #333;
+            border-bottom: 3px solid #007bff;
+            padding-bottom: 10px;
+        }
+        .form-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+        input[type="text"],
+        input[type="email"],
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .radio-option {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .radio-option:hover {
+            background-color: #f8f9fa;
+        }
+        .radio-option input[type="radio"] {
+            margin-right: 10px;
+            width: auto;
+        }
+        .error {
+            color: #dc3545;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+        .has-error input,
+        .has-error select {
+            border-color: #dc3545;
+        }
+        .buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+        }
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+    </style>
 </head>
 <body>
-<div class="container">
-    <h1>Pridať zamestnanca</h1>
+<h1>Pridať nového zamestnanca</h1>
 
-    <form th:action="@{/employees}" th:object="${employee}" method="post">
-        <div class="mb-3">
-            <label class="form-label">Meno</label>
-            <input type="text" class="form-control" th:field="*{firstName}" required>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Priezvisko</label>
-            <input type="text" class="form-control" th:field="*{lastName}" required>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">E-mail</label>
-            <input type="email" class="form-control" th:field="*{email}" required>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Pozícia</label>
-            <select class="form-select" th:field="*{jobTitle}" required>
-                <option value="" disabled selected>Vyberte pozíciu</option>
-                <option th:each="jt : ${jobTitles}" th:value="${jt}" th:text="${jt}"></option>
-            </select>
-        </div>
-        <div class="mb-3">
-            <label class="form-label d-block">Úväzok</label>
-            <div class="form-check form-check-inline" th:each="st : ${employmentStatuses}">
-                <input class="form-check-input" type="radio" th:field="*{fullTime}" th:value="${st}" required>
-                <label class="form-check-label" th:for="${#ids.prev('fullTime')}" th:text="${st}"></label>
+<div class="form-container">
+    <form th:action="@{/templates/employees}" th:object="${employee}" method="post">
+
+        <div class="form-group" th:classappend="${#fields.hasErrors('firstName')} ? 'has-error'">
+            <label for="firstName">Krstné meno:</label>
+            <input type="text" id="firstName" th:field="*{firstName}" placeholder="Napr. Ján">
+            <div class="error" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">
+                Chyba krstného mena
             </div>
         </div>
-        <div class="d-flex gap-2">
+
+        <div class="form-group" th:classappend="${#fields.hasErrors('lastName')} ? 'has-error'">
+            <label for="lastName">Priezvisko:</label>
+            <input type="text" id="lastName" th:field="*{lastName}" placeholder="Napr. Novák">
+            <div class="error" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">
+                Chyba priezviska
+            </div>
+        </div>
+
+        <div class="form-group" th:classappend="${#fields.hasErrors('email')} ? 'has-error'">
+            <label for="email">Email:</label>
+            <input type="email" id="email" th:field="*{email}" placeholder="jan.novak@email.com">
+            <div class="error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">
+                Chyba emailu
+            </div>
+        </div>
+
+        <div class="form-group" th:classappend="${#fields.hasErrors('jobTitle')} ? 'has-error'">
+            <label for="jobTitle">Pracovná pozícia:</label>
+            <select id="jobTitle" th:field="*{jobTitle}">
+                <option value="">-- Vyberte pozíciu --</option>
+                <option th:each="title : ${jobTitles}"
+                        th:value="${title}"
+                        th:text="${title}">
+                    Pozícia
+                </option>
+            </select>
+            <div class="error" th:if="${#fields.hasErrors('jobTitle')}" th:errors="*{jobTitle}">
+                Chyba pozície
+            </div>
+        </div>
+
+        <div class="form-group" th:classappend="${#fields.hasErrors('fullTime')} ? 'has-error'">
+            <label>Typ úväzku:</label>
+            <div class="radio-group">
+                <label class="radio-option" th:each="status : ${employmentStatuses}">
+                    <input type="radio"
+                           th:field="*{fullTime}"
+                           th:value="${status}">
+                    <span th:text="${status}">Typ úväzku</span>
+                </label>
+            </div>
+            <div class="error" th:if="${#fields.hasErrors('fullTime')}" th:errors="*{fullTime}">
+                Chyba typu úväzku
+            </div>
+        </div>
+
+        <div class="buttons">
             <button type="submit" class="btn btn-primary">Uložiť</button>
-            <a class="btn btn-secondary" th:href="@{/employees}">Späť</a>
+            <a th:href="@{/templates/employees}" class="btn btn-secondary">Zrušiť</a>
         </div>
     </form>
 </div>
 </body>
 </html>
-
